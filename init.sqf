@@ -1,5 +1,6 @@
 { call compile preprocessFile _x; } forEach [
-  "vehicle_maintenance\x_reload.sqf"
+  "vehicle_maintenance\x_reload.sqf",
+  "BEN_fns\BEN_fns.sqf"
 ];
 
 { [ player ] execVM _x; } forEach [

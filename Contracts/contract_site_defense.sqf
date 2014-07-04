@@ -8,7 +8,7 @@ private [
   "_hintWestSuccess", "_hintWestFailure", "_hintWestActive", "_hintWestStartup",
   "_lengthOfMeeting", "_maxEIGroups", "_minEIGroups", "_siteDefenseMarkers",
   "_defendWaypoint", "_siteDefenseMarker", "_sitePos", "_vipGrp", "_rbp", "_vipPos",
-  "_EIGroups", "_EIGroupsCount", "_created"
+  "_EIGroups", "_EIGroupsCount", "_created", "_timeLeft", "_carPos"
 ];
 
 
@@ -51,7 +51,8 @@ _created = [];
 _vipGrp = [ _sitePos, "BEN_PMC_VIP_SD" ] call BEN_createVIPGroup;
 _civs = [ "CAF_AG_ME_CIV_04", "CAF_AG_ME_CIV_03", "CAF_AG_ME_CIV_02", "CAF_AG_ME_CIV" ];
 (_civs call BIS_fnc_selectrandom) createUnit [ _sitePos, _vipGrp, "BEN_CIV_VIP_SD = this;" ];
-BEN_PMC_VIP_SUV = "C_SUV_01_F" createVehicle _sitePos;
+_carPos = _sitePos findEmptyPosition [ 0, 100, "C_SUV_01_F" ];
+BEN_PMC_VIP_SUV = "C_SUV_01_F" createVehicle _carPos;
 _created = _created + (units _vipGrp) + [ BEN_PMC_VIP_SUV ];
 
 /***************** Place the VIPs randomly *****************/
@@ -60,13 +61,16 @@ _rbp = [ nearestBuilding _sitePos ] call BEN_randomBldgPos;
   _x setPos _rbp;
   _x playAction "sitdown";
   _x disableai "move";
+  sleep 1;
 } forEach [ BEN_PMC_VIP_SD, BEN_CIV_VIP_SD ];
 _vipPos = position BEN_PMC_VIP_SD;
+
 
 /***************** Create the defense waypoint for the VIP group *****************/
 _defendWaypoint = _vipGrp addWaypoint [ _vipPos, 0 ];
 _defendWaypoint setWaypointCombatMode "RED";
 _defendWaypoint setWaypointType "HOLD";
+_vipGrp setCurrentWaypoint _defendWaypoint;
 
 /***************** Update the marker on the map *****************/
 [ _siteDefenseMarker, "Secure location", "ColorRed", 1, "mil_dot" ] call BEN_updateMarker;
@@ -89,7 +93,7 @@ waitUntil {
     if (playerSide == resistance) then { hint parsetext format [ _hintPmcActive, _EIGroupsCount ]; };
     if (playerSide == east) then { hint parsetext format [ _hintEastActive, _EIGroupsCount ]; };
     while { count _EIGroups < _EIGroupsCount } do {
-      _posEI = [ _sitePos, 1000 ] call BEN_randomPos;
+      _posEI = [ _sitePos, 750 ] call BEN_randomPos;
       _grpEI = [ _posEI, EAST, (configfile >> "CfgGroups" >> "EAST" >> "caf_ag_me_t" >> "Infantry" >> "6_men_me_t") ] call BIS_fnc_spawnGroup;
       _sadWaypoint = _grpEI addWaypoint [ _vipPos, 0 ];
       _sadWaypoint setWaypointBehaviour "AWARE";
@@ -100,11 +104,17 @@ waitUntil {
     };
   };
 
+  /*** Show the time left to players near the meeting ***/
+  if ((player distance _rbp) < 2 && _sadStarted) then {
+    _timeLeft = floor ((_lengthOfMeeting - _t) / 60);
+    hint parsetext format [ "The meeting will end in about %1 minutes", _timeLeft ];
+  };
+
   /***************** check for win or fail *****************/
   _deadEIGroups = 0;
   if (_sadStarted) then { _t = _t + 1; };
   if (!alive BEN_PMC_VIP_SD || !alive BEN_CIV_VIP_SD) then { _result = "fail"; };
-  if (alive BEN_PMC_VIP_SD && alive BEN_CIV_VIP_SD && _t >= _lengthOfMeeting) then { _result = "win"; };
+  if (_t > _lengthOfMeeting) then { _result = "win"; };
   { if (({alive _x} count units _x) < 1) then { _deadEIGroups = _deadEIGroups + 1; }; } forEach _EIGroups;
   if (_deadEIGroups == _EIGroupsCount) then { _result = "win"; };
 

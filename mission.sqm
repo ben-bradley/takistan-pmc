@@ -5477,13 +5477,12 @@ class Mission
 		class Item74
 		{
 			position[]={6039.4448,66.913841,10418.863};
-			azimut=-749.63049;
+			azimut=-749.63;
 			special="NONE";
 			id=227;
 			side="EMPTY";
 			vehicle="C_supplyCrate_F";
 			skill=0.60000002;
-			init="this addAction[""<t color='#ff1111'>Virtual Ammobox</t>"", ""VAS\open.sqf""];";
 		};
 		class Item75
 		{
@@ -6192,13 +6191,12 @@ class Mission
 		class Item139
 		{
 			position[]={8300.5342,296.03915,1824.119};
-			azimut=-836.42908;
+			azimut=-836.42902;
 			special="NONE";
 			id=292;
 			side="EMPTY";
 			vehicle="C_supplyCrate_F";
 			skill=0.60000002;
-			init="this addAction[""<t color='#ff1111'>Virtual Ammobox</t>"", ""VAS\open.sqf""];";
 		};
 		class Item140
 		{
@@ -7453,7 +7451,7 @@ class Mission
 		};
 		class Item85
 		{
-			position[]={5680.7568,81.940002,8898.0938};
+			position[]={5655.645,81.919563,8894.0859};
 			name="site_defense_1";
 			type="Empty";
 			colorName="ColorBlack";
@@ -7461,59 +7459,59 @@ class Mission
 		};
 		class Item86
 		{
-			position[]={10496.289,137.75113,11085.327};
+			position[]={10504.176,138.14616,11075.431};
 			name="site_defense_2";
 			type="Empty";
 		};
 		class Item87
 		{
-			position[]={11482.764,275.10187,8253.6846};
+			position[]={11485.075,275.6391,8234.7715};
 			name="site_defense_3";
 			type="Empty";
 		};
 		class Item88
 		{
-			position[]={9138.7402,204.16528,6760.8857};
+			position[]={9161.082,204.62067,6787.0576};
 			name="site_defense_4";
 			type="Empty";
 			angle=232.35899;
 		};
 		class Item89
 		{
-			position[]={5979.6172,123.48027,7207.5977};
+			position[]={5976.1572,124.52547,7191.3359};
 			name="site_defense_5";
 			type="Empty";
 			angle=-120.039;
 		};
 		class Item90
 		{
-			position[]={2715.2856,221.16776,7974.3892};
+			position[]={2716.897,225.95291,8001.1035};
 			name="site_defense_6";
 			type="Empty";
 			angle=159.433;
 		};
 		class Item91
 		{
-			position[]={1683.1511,195.2169,11621.039};
+			position[]={1661.3849,194.94461,11626.463};
 			name="site_defense_7";
 			type="Empty";
 		};
 		class Item92
 		{
-			position[]={721.1424,237.31972,2942.4941};
+			position[]={734.77753,238.84497,2929.1519};
 			name="site_defense_8";
 			type="Empty";
 		};
 		class Item93
 		{
-			position[]={2755.5647,370.48502,852.50983};
+			position[]={2757.7559,370.37,867.61755};
 			name="site_defense_9";
 			type="Empty";
 			angle=-168.28273;
 		};
 		class Item94
 		{
-			position[]={11034.63,411.31824,2565.2717};
+			position[]={11080.402,414.0116,2566.9617};
 			name="site_defense_10";
 			type="Empty";
 		};

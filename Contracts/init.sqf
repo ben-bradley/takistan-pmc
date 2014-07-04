@@ -1,5 +1,4 @@
 // Contracts System ------------------------------------------------------------------------ //
-call compile preprocessFile "Contracts\BEN_fns.sqf";
 waitUntil { time > 5 };
 
 BEN_CONTRACT_ACTIVE = false;
