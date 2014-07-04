@@ -1,0 +1,122 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'c:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'c:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'update',
+1 verbose cli   '-g',
+1 verbose cli   'ungit' ]
+2 info using npm@1.4.3
+3 info using node@v0.10.26
+4 verbose url raw ungit
+5 verbose url resolving [ 'https://registry.npmjs.org/', './ungit' ]
+6 verbose url resolved https://registry.npmjs.org/ungit
+7 info trying registry request attempt 1 at 20:01:57
+8 verbose etag "2NHE4R9WHKF6EZM339OCSEX0R"
+9 http GET https://registry.npmjs.org/ungit
+10 http 304 https://registry.npmjs.org/ungit
+11 silly registry.get cb [ 304,
+11 silly registry.get   { date: 'Fri, 18 Apr 2014 03:01:57 GMT',
+11 silly registry.get     server: 'Apache',
+11 silly registry.get     via: '1.1 varnish',
+11 silly registry.get     'last-modified': 'Fri, 18 Apr 2014 03:01:57 GMT',
+11 silly registry.get     'cache-control': 'max-age=1',
+11 silly registry.get     etag: '"2NHE4R9WHKF6EZM339OCSEX0R"',
+11 silly registry.get     'x-served-by': 'cache-sv60-SJC3',
+11 silly registry.get     'x-cache': 'MISS',
+11 silly registry.get     'x-cache-hits': '0',
+11 silly registry.get     'x-timer': 'S1397790117.095951796,VS0,VE169',
+11 silly registry.get     vary: 'Accept',
+11 silly registry.get     'content-length': '0',
+11 silly registry.get     'keep-alive': 'timeout=10, max=50',
+11 silly registry.get     connection: 'Keep-Alive' } ]
+12 verbose etag ungit from cache
+13 info outdated updating [ [ 'C:\\Users\\Ben\\AppData\\Roaming\\npm',
+13 info outdated     'ungit',
+13 info outdated     '0.7.2',
+13 info outdated     '0.8.0',
+13 info outdated     '0.8.0',
+13 info outdated     '*' ] ]
+14 verbose install where,what [ 'C:\\Users\\Ben\\AppData\\Roaming\\npm', [ 'ungit@0.8.0' ] ]
+15 verbose cache add [ 'ungit@0.8.0', null ]
+16 verbose cache add name=undefined spec="ungit@0.8.0" args=["ungit@0.8.0",null]
+17 verbose parsed url { protocol: null,
+17 verbose parsed url   slashes: null,
+17 verbose parsed url   auth: null,
+17 verbose parsed url   host: null,
+17 verbose parsed url   port: null,
+17 verbose parsed url   hostname: null,
+17 verbose parsed url   hash: null,
+17 verbose parsed url   search: null,
+17 verbose parsed url   query: null,
+17 verbose parsed url   pathname: 'ungit@0.8.0',
+17 verbose parsed url   path: 'ungit@0.8.0',
+17 verbose parsed url   href: 'ungit@0.8.0' }
+18 verbose cache add name="ungit" spec="0.8.0" args=["ungit","0.8.0"]
+19 verbose parsed url { protocol: null,
+19 verbose parsed url   slashes: null,
+19 verbose parsed url   auth: null,
+19 verbose parsed url   host: null,
+19 verbose parsed url   port: null,
+19 verbose parsed url   hostname: null,
+19 verbose parsed url   hash: null,
+19 verbose parsed url   search: null,
+19 verbose parsed url   query: null,
+19 verbose parsed url   pathname: '0.8.0',
+19 verbose parsed url   path: '0.8.0',
+19 verbose parsed url   href: '0.8.0' }
+20 verbose addNamed [ 'ungit', '0.8.0' ]
+21 verbose addNamed [ '0.8.0', '0.8.0' ]
+22 silly lockFile ac9f615e-ungit-0-8-0 ungit@0.8.0
+23 verbose lock ungit@0.8.0 C:\Users\Ben\AppData\Roaming\npm-cache\ac9f615e-ungit-0-8-0.lock
+24 verbose url raw ungit/0.8.0
+25 verbose url resolving [ 'https://registry.npmjs.org/', './ungit/0.8.0' ]
+26 verbose url resolved https://registry.npmjs.org/ungit/0.8.0
+27 info trying registry request attempt 1 at 20:01:58
+28 http GET https://registry.npmjs.org/ungit/0.8.0
+29 http 200 https://registry.npmjs.org/ungit/0.8.0
+30 silly registry.get cb [ 200,
+30 silly registry.get   { date: 'Fri, 18 Apr 2014 03:01:57 GMT',
+30 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R14B04)',
+30 silly registry.get     etag: '"2NHE4R9WHKF6EZM339OCSEX0R"',
+30 silly registry.get     'content-type': 'application/json',
+30 silly registry.get     via: '1.1 varnish',
+30 silly registry.get     'cache-control': 'max-age=1',
+30 silly registry.get     'content-length': '2423',
+30 silly registry.get     'accept-ranges': 'bytes',
+30 silly registry.get     age: '0',
+30 silly registry.get     'x-served-by': 'cache-v42-ASH, cache-sv62-SJC3',
+30 silly registry.get     'x-cache': 'MISS, MISS',
+30 silly registry.get     'x-cache-hits': '0, 0',
+30 silly registry.get     'x-timer': 'S1397790117.580811501,VS0,VS38,VE139,VE175',
+30 silly registry.get     vary: 'Accept',
+30 silly registry.get     'keep-alive': 'timeout=10, max=50',
+30 silly registry.get     connection: 'Keep-Alive' } ]
+31 silly lockFile f309571d--npmjs-org-ungit-ungit-0-8-0-tgz https://registry.npmjs.org/ungit/-/ungit-0.8.0.tgz
+32 verbose lock https://registry.npmjs.org/ungit/-/ungit-0.8.0.tgz C:\Users\Ben\AppData\Roaming\npm-cache\f309571d--npmjs-org-ungit-ungit-0-8-0-tgz.lock
+33 verbose addRemoteTarball [ 'https://registry.npmjs.org/ungit/-/ungit-0.8.0.tgz',
+33 verbose addRemoteTarball   'ca1f166ee65fbfe54469459d51f77ca502f1c6a4' ]
+34 info retry fetch attempt 1 at 20:01:59
+35 verbose fetch to= C:\Users\Ben\AppData\Local\Temp\npm-3332-Z-_9JPzt\1397790119032-0.023773006396368146\tmp.tgz
+36 http GET https://registry.npmjs.org/ungit/-/ungit-0.8.0.tgz
+37 http 200 https://registry.npmjs.org/ungit/-/ungit-0.8.0.tgz
+38 silly lockFile f309571d--npmjs-org-ungit-ungit-0-8-0-tgz https://registry.npmjs.org/ungit/-/ungit-0.8.0.tgz
+39 silly lockFile f309571d--npmjs-org-ungit-ungit-0-8-0-tgz https://registry.npmjs.org/ungit/-/ungit-0.8.0.tgz
+40 silly lockFile ac9f615e-ungit-0-8-0 ungit@0.8.0
+41 silly lockFile ac9f615e-ungit-0-8-0 ungit@0.8.0
+42 error Error: shasum check failed for C:\Users\Ben\AppData\Local\Temp\npm-3332-Z-_9JPzt\1397790119032-0.023773006396368146\tmp.tgz
+42 error Expected: ca1f166ee65fbfe54469459d51f77ca502f1c6a4
+42 error Actual:   e45c6cdb6fdeee3a30ee8a3c482e5f08491acc53
+42 error From:     https://registry.npmjs.org/ungit/-/ungit-0.8.0.tgz
+42 error     at c:\Program Files\nodejs\node_modules\npm\node_modules\sha\index.js:38:8
+42 error     at ReadStream.<anonymous> (c:\Program Files\nodejs\node_modules\npm\node_modules\sha\index.js:85:7)
+42 error     at ReadStream.EventEmitter.emit (events.js:117:20)
+42 error     at _stream_readable.js:920:16
+42 error     at process._tickCallback (node.js:415:13)
+43 error If you need help, you may report this *entire* log,
+43 error including the npm and node versions, at:
+43 error     <http://github.com/npm/npm/issues>
+44 error System Windows_NT 6.1.7601
+45 error command "c:\\Program Files\\nodejs\\node.exe" "c:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "update" "-g" "ungit"
+46 error cwd c:\Users\Ben\Documents\Arma 3\missions\ALiVE-Fallujahstan.fallujah
+47 error node -v v0.10.26
+48 error npm -v 1.4.3
+49 verbose exit [ 1, true ]

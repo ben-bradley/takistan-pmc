@@ -1,0 +1,12 @@
+respawn = "BASE";
+respawnDelay = 5;
+respawnDialog = false;
+author = Ben;
+onLoadName = ALiVE - Takistan PMC;
+class Header
+{
+  gameType = COOP;
+  minPlayers = 1;
+  maxPlayers = 16;
+};
+
