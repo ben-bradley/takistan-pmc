@@ -6,12 +6,12 @@ publicVariable "BEN_IEDS_SET";
 
 while {true} do
 {
-	BEN_IEDS_SET = true;
-	publicVariable "BEN_IEDS_SET";
+  BEN_IEDS_SET = true;
+  publicVariable "BEN_IEDS_SET";
 
   execVM "IEDs\ieds_set.sqf";
-  
-	waitUntil { !BEN_IEDS_SET };
-	sleep ((random 120) + 60);
+
+  waitUntil { !BEN_IEDS_SET };
+  sleep ((random 120) + 60);
 };
 // ---------------------------------------------------------------------------------------------- //

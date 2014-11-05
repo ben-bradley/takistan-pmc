@@ -3,11 +3,13 @@
   "BEN_fns\BEN_fns.sqf"
 ];
 
+{ [ _x ] call BEN_hideMarker; } forEach BEN_towns;
+
 { [ player ] execVM _x; } forEach [
-  "AidStation\init.sqf",
+  "GroupsMenu\initGroups.sqf",
+//  "AidStation\init.sqf",
   "Contracts\init.sqf",
-  "Missions\init.sqf",
+//  "Missions\init.sqf",
   "Roadblocks\init.sqf",
-  "IEDs\init.sqf",
-  "Lights\init.sqf"
+  "IEDs\init.sqf"
 ];

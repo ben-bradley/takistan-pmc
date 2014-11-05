@@ -1,8 +1,3 @@
-BEN_debug = {
-  hint format [ "%1", _this ];
-};
-
-
 /************************************************************************************************/
 /* _randomPos = [ <position of origin>, <radius within which to generate> ] call BEN_randomPos; */
 /************************************************************************************************/
@@ -35,13 +30,25 @@ BEN_createVIPGroup = {
   _vipVar = _this select 1;
   _initString = format [ "%1 = this;", _vipVar ];
 
-  _grp = [ _origin, RESISTANCE, (configfile >> "CfgGroups" >> "Indep" >> "PMC_POMI" >> "Infantry" >> "PMC_VIP_Bodyguard") ] call BIS_fnc_spawnGroup;
+  _grp = [ _origin, RESISTANCE, (configfile >> "CfgGroups" >> "Indep" >> "PG_Services" >> "Infantry" >> "PMC_VIP_Bodyguard") ] call BIS_fnc_spawnGroup;
   "PMC_VIP_F" createUnit [ _origin, _grp, _initString ];
-  hint "";
   sleep 1;
 
   _grp
 
+};
+
+
+BEN_towns = [
+  "town_1", "town_2", "town_3", "town_4", "town_5", "town_6", "town_7", "town_8", "town_9", "town_10",
+  "town_11", "town_12", "town_13", "town_14", "town_15", "town_16", "town_17", "town_18", "town_19", "town_20",
+  "town_21", "town_22", "town_23", "town_24", "town_25", "town_26", "town_27", "town_28", "town_29", "town_30",
+  "town_31", "town_32", "town_33"
+];
+
+
+BEN_randomTown = {
+  BEN_towns call BIS_fnc_selectRandom
 };
 
 

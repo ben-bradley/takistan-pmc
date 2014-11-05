@@ -84,25 +84,23 @@ _terroristGrp move _epPos;
 _result = "pending";
 waitUntil {
   sleep 1;
-  
+
   /***************** check for win or fail *****************/
   if (({alive _x} count units _terroristGrp) < 1) then { _result = "win"; };
   { if ((_x distance _epPos) < 10) then { _result = "fail"; }; } forEach units _terroristGrp;
-  
+
   /***************** conditions for ending the wait *****************/
   (_result == "win") OR (_result == "fail")
 };
 
 /***************** handle 'fail' *****************/
 if (_result == "fail") then {
-  hint format [ "fail: %1", playerSide ];
   if (playerSide == resistance) then { hint parsetext _hintPmcFailure; };
   if (playerSide == east) then { hint parsetext _hintEastSuccess; };
 };
 
 /***************** handle 'win' *****************/
 if (_result == "win") then {
-  hint format [ "win: %1", playerSide ];
   if (playerSide == resistance) then { hint parsetext _hintPmcSuccess; };
   if (playerSide == east) then { hint parsetext _hintEastFailure; };
 };

@@ -6,8 +6,11 @@ private [
   "_hintPmcSuccess", "_hintPmcFailure", "_hintPmcActive", "_hintPmcStartup",
   "_hintEastSuccess", "_hintEastFailure", "_hintEastActive", "_hintEastStartup",
   "_hintWestSuccess", "_hintWestFailure", "_hintWestActive", "_hintWestStartup",
-  "_vipRecoveryMarkers", "_vipReturnMarkers", "_vipRecoveryMarker", "_vipRecoveryPos",
-  "_created", "_rbp", "_vipPos", "_vipGrp", "_vipGrpHoldWaypoint", "_maxEIGroups", "_minEIGroups", "_EIGroups", "_EIGroupsCount", "_result", "_vipReturnTask", "_vipJoined"
+  "_vipRecoveryMarkers", "_vipReturnMarkers", "_vipRecoveryMarker", "_vipRecoveryPos", "_carPos",
+  "_created", "_rbp", "_vipPos", "_vipGrp", "_vipGrpHoldWaypoint", "_maxEIGroups", "_minEIGroups",
+  "_EIGroups", "_EIGroupsCount", "_result", "_vipReturnTask", "_vipJoined", "_startTimeout", "_endTimeout",
+
+  "_town", "_townPos"
 ];
 
 
@@ -16,7 +19,6 @@ private [
 /***************** Start configurable variables *****************/
 /***************** Start configurable variables *****************/
 
-_vipRecoveryMarkers = [ "vip_recovery_1", "vip_recovery_2", "vip_recovery_3", "vip_recovery_4", "vip_recovery_5", "vip_recovery_6", "vip_recovery_7", "vip_recovery_8", "vip_recovery_9", "vip_recovery_10" ];
 _vipReturnMarkers = [ "vip_return_1", "vip_return_2", "vip_return_3" ];
 _maxEIGroups = 6; // maximum number of 6-man groups?
 _minEIGroups = 3; // minimum number of 6-man groups?
@@ -41,13 +43,19 @@ _hintEastStartup = "<t align='center'><t size='2.2'>Infidel VIP</t><br/><t size=
 if (playerSide == east) then { hint parsetext _hintEastStartup; };
 
 /***************** Select a start point *****************/
-_vipRecoveryMarker = _vipRecoveryMarkers call BIS_fnc_selectrandom;
-_vipRecoveryPos = getMarkerPos _vipRecoveryMarker;
+//{ [ _x ] call BEN_hideMarker; } forEach _vipRecoveryMarkers;
+//_vipRecoveryMarker = _vipRecoveryMarkers call BIS_fnc_selectrandom;
+//_vipRecoveryPos = getMarkerPos _vipRecoveryMarker;
+{ [ _x ] call BEN_hideMarker; } forEach BEN_towns;
+_town = call BEN_randomTown;
+_townPos = getMarkerPos _town;
+_vipRecoveryPos = [ _townPos, 200 ] call BEN_randomPos;
 
 /***************** Create the VIP group *****************/
 _created = [];
 _vipGrp = [ _vipRecoveryPos, "BEN_PMC_VIP_VR" ] call BEN_createVIPGroup;
-BEN_PMC_VIP_SUV = "C_SUV_01_F" createVehicle _vipRecoveryPos;
+_carPos = _vipRecoveryPos findEmptyPosition [ 0, 100, "C_SUV_01_F" ];
+BEN_PMC_VIP_SUV = "C_SUV_01_F" createVehicle _carPos;
 BEN_PMC_VIP_SUV setDamage 0.9;
 _created = _created + (units _vipGrp) + [ BEN_PMC_VIP_SUV ];
 
@@ -65,6 +73,7 @@ _vipGrpHoldWaypoint setWaypointCombatMode "RED";
 _vipGrpHoldWaypoint setWaypointType "HOLD";
 
 /***************** Update the map marker *****************/
+_vipRecoveryMarker = createMarker [ "Recover the VIP", _vipPos ];
 [ _vipRecoveryMarker, "Recover the VIP", "ColorRed", 1, "mil_dot" ] call BEN_updateMarker;
 
 /***************** Create the enemy groups *****************/
@@ -72,7 +81,7 @@ _EIGroups = [];
 _EIGroupsCount = floor random _maxEIGroups;
 if (_EIGroupsCount < _minEIGroups) then { _EIGroupsCount = _minEIGroups };
 while { count _EIGroups < _EIGroupsCount } do {
-  _posEI = [ _sitePos, 1000 ] call BEN_randomPos;
+  _posEI = [ _vipPos, 1000 ] call BEN_randomPos;
   _grpEI = [ _posEI, EAST, (configfile >> "CfgGroups" >> "EAST" >> "caf_ag_me_t" >> "Infantry" >> "6_men_me_t") ] call BIS_fnc_spawnGroup;
   _sadWaypoint = _grpEI addWaypoint [ _vipPos, 0 ];
   _sadWaypoint setWaypointBehaviour "AWARE";
@@ -85,6 +94,8 @@ while { count _EIGroups < _EIGroupsCount } do {
 /***************** Begin waiting for results *****************/
 _result = "pending";
 _vipJoined = false;
+_startTimeout = 0;
+_endTimeout = 0;
 waitUntil {
   sleep 1;
 
@@ -99,6 +110,16 @@ waitUntil {
     [ _vipRecoveryMarker ] call BEN_hideMaker;
     { [ _x, "Return the VIP", "ColorGreen", 1, "mil_dot" ] call BEN_updateMarker; } forEach _vipReturnMarkers;
   };
+
+  /***************** check for timeout ******************/
+  if (!_vipJoined) then {
+    _startTimeout = _startTimeout + 1;
+  };
+  if(_vipJoined) then {
+    _endTimeout = _endTimeout + 1;
+  };
+  if (_startTimeout > 900) then { _result = "fail"; };
+  if (_endTimeout > 1800) then { _result = "fail"; };
 
   /***************** check for win or fail *****************/
   if (!alive BEN_PMC_VIP_VR) then { _result = "fail"; };
@@ -122,7 +143,8 @@ if (_result == "win") then {
 
 /***************** do clean up *****************/
 sleep 5;
-{ [ _x ] call BEN_hideMarker; } forEach _vipRecoveryMarkers;
+//{ [ _x ] call BEN_hideMarker; } forEach _vipRecoveryMarkers;
+deleteMarker _vipRecoveryMarker;
 { [ _x ] call BEN_hideMarker; } forEach _vipReturnMarkers;
 
 sleep 10;

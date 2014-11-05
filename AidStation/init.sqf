@@ -1,4 +1,4 @@
-private [ "_bldgClass", "_medicClass", "_pos", "_grp", "_medic", "_medicPos", _aidMarker ];
+private [ "_bldgClass", "_medicClass", "_pos", "_grp", "_medic", "_medicPos", "_aidMarker" ];
 
 // assign values to these to suit your mission
 _bldgClass = "Land_Medevac_house_V1_F";

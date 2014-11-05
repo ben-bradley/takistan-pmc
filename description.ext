@@ -10,3 +10,8 @@ class Header
   maxPlayers = 16;
 };
 
+#include "ASORGS\menu.hpp"
+class CfgFunctions
+{
+  #include "ASORGS\cfgfunctions.hpp"
+};

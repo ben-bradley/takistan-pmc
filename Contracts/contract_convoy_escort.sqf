@@ -8,7 +8,7 @@ private [
   "_hintWestSuccess", "_hintWestFailure", "_hintWestActive", "_hintWestStartup",
   "_convoyEscortMarkers", "_convoyEscortStartMarker", "_convoyEscortEndMarker",
   "_convoyEscortStartPos", "_convoyEscortEndPos",
-  "_created", "_convoyGrp", "_linkedup", "_result"
+  "_created", "_convoyGrp", "_linkedup", "_result", "_startTimeout", "_endTimeout"
 ];
 
 
@@ -39,6 +39,7 @@ _hintEastStartup = "<t align='center'><t size='2.2'>Infidel Convoy</t><br/><t si
 if (playerSide == east) then { hint parsetext _hintEastStartup; };
 
 /***************** Select a start & end point *****************/
+{ [ _x ] call BEN_hideMarker; } forEach _convoyEscortMarkers;
 _convoyEscortStartMarker = _convoyEscortMarkers call BIS_fnc_selectrandom;
 _convoyEscortEndMarker = _convoyEscortMarkers call BIS_fnc_selectrandom;
 while { _convoyEscortStartMarker == _convoyEscortEndMarker } do { _convoyEscortEndMarker = _convoyEscortMarkers call BIS_fnc_selectrandom; };
@@ -61,6 +62,7 @@ _created = _created + [ BEN_PMC_TRUCKDRIVER, BEN_PMC_SUPPLYTRUCK ];
 /***************** Begin waiting for results *****************/
 _result = "pending";
 _linkedup = false;
+_startTimeout = 0;
 waitUntil {
   sleep 1;
 
@@ -74,7 +76,17 @@ waitUntil {
     [ _convoyEscortEndMarker, "Drop off supplies", "ColorGreen", 1, "mil_dot" ] call BEN_updateMarker;
   };
 
+  /***************** check for start timeout ******************/
+  if (!_linkedup) then {
+    _startTimeout = _startTimeout + 1;
+  };
+  if (_linkedup) then {
+    _endTimeout = _endTimeout + 1;
+  };
+
   /***************** check for win or fail *****************/
+  if (_startTimeout > 900) then { _result = "fail"; };
+  if (_endTimeout > 1800) then { _result = "fail"; };
   if (!alive BEN_PMC_SUPPLYTRUCK) then { _result = "fail"; };
   if (alive BEN_PMC_SUPPLYTRUCK && BEN_PMC_SUPPLYTRUCK distance _convoyEscortEndPos < 10) then { _result = "win"; };
 

@@ -8,7 +8,9 @@ private [
   "_hintWestSuccess", "_hintWestFailure", "_hintWestActive", "_hintWestStartup",
   "_lengthOfMeeting", "_maxEIGroups", "_minEIGroups", "_siteDefenseMarkers",
   "_defendWaypoint", "_siteDefenseMarker", "_sitePos", "_vipGrp", "_rbp", "_vipPos",
-  "_EIGroups", "_EIGroupsCount", "_created", "_timeLeft", "_carPos"
+  "_EIGroups", "_EIGroupsCount", "_created", "_timeLeft", "_carPos", "_startTimeout",
+
+  "_town", "_townPos"
 ];
 
 
@@ -17,7 +19,6 @@ private [
 /***************** Start configurable variables *****************/
 /***************** Start configurable variables *****************/
 
-_siteDefenseMarkers = [ "site_defense_1", "site_defense_2", "site_defense_3", "site_defense_4", "site_defense_5", "site_defense_6", "site_defense_7", "site_defense_8", "site_defense_9", "site_defense_10" ]; // list of markers
 _maxEIGroups = 10; // maximum number of 6-man groups?
 _minEIGroups = 3; // minimum number of 6-man groups?
 _lengthOfMeeting = 300 + (random 300); // the length in seconds that the meeting will take before successfully completing
@@ -43,15 +44,17 @@ if (playerSide == east) then { hint parsetext _hintEastStartup; };
 
 
 /***************** Select a starting point *****************/
-_siteDefenseMarker = _siteDefenseMarkers call BIS_fnc_selectrandom;
-_sitePos = getMarkerPos _siteDefenseMarker;
+{ [ _x ] call BEN_hideMarker; } forEach BEN_towns;
+_town = call BEN_randomTown;
+_townPos = getMarkerPos _town;
+_sitePos = [ _townPos, 200 ] call BEN_randomPos;
 
 /***************** Create the VIP group *****************/
 _created = [];
 _vipGrp = [ _sitePos, "BEN_PMC_VIP_SD" ] call BEN_createVIPGroup;
 _civs = [ "CAF_AG_ME_CIV_04", "CAF_AG_ME_CIV_03", "CAF_AG_ME_CIV_02", "CAF_AG_ME_CIV" ];
 (_civs call BIS_fnc_selectrandom) createUnit [ _sitePos, _vipGrp, "BEN_CIV_VIP_SD = this;" ];
-_carPos = _sitePos findEmptyPosition [ 0, 100, "C_SUV_01_F" ];
+_carPos = _sitePos findEmptyPosition [ 0, 10, "C_SUV_01_F" ];
 BEN_PMC_VIP_SUV = "C_SUV_01_F" createVehicle _carPos;
 _created = _created + (units _vipGrp) + [ BEN_PMC_VIP_SUV ];
 
@@ -73,12 +76,14 @@ _defendWaypoint setWaypointType "HOLD";
 _vipGrp setCurrentWaypoint _defendWaypoint;
 
 /***************** Update the marker on the map *****************/
+_siteDefenseMarker = createMarker [ "Secure location", _vipPos ];
 [ _siteDefenseMarker, "Secure location", "ColorRed", 1, "mil_dot" ] call BEN_updateMarker;
 
 /***************** Begin waiting for results *****************/
 _result = "pending";
 _sadStarted = false;
 _t = 0;
+_startTimeout = 0;
 waitUntil {
   sleep 1;
 
@@ -110,6 +115,12 @@ waitUntil {
     hint parsetext format [ "The meeting will end in about %1 minutes", _timeLeft ];
   };
 
+  /***************** check for start timeout ******************/
+  if (!_sadStarted) then {
+    _startTimeout = _startTimeout + 1;
+  };
+  if (_startTimeout > 900) then { _result = "fail"; };
+
   /***************** check for win or fail *****************/
   _deadEIGroups = 0;
   if (_sadStarted) then { _t = _t + 1; };
@@ -136,7 +147,7 @@ if (_result == "win") then {
 
 /***************** do clean up *****************/
 sleep 5;
-[ _siteDefenseMarker ] call BEN_hideMarker;
+deleteMarker _siteDefenseMarker;
 
 sleep 10;
 { deleteVehicle _x; } forEach _created;

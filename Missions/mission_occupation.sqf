@@ -79,14 +79,14 @@ _t = 0;
 
 waitUntil {
   sleep 1;
-  
+
   _t = _t + 1; // timer count +1
   _leftAlive = { alive _x } count _created;
-  
+
   /***************** check for win or fail *****************/
-  if (_leftAlive < (_ratio * 60)) then { _result = "win"; };
+  if (_leftAlive < (_ratio * (count _created))) then { _result = "win"; };
   if (_t >= _timer) then { _result = "fail"; };
-  
+
   /***************** conditions for ending the wait *****************/
   (_result == "win") OR (_result == "fail")
 };

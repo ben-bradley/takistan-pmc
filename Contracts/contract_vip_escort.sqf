@@ -6,8 +6,8 @@ private [
   "_hintPmcSuccess", "_hintPmcFailure", "_hintPmcActive", "_hintPmcStartup",
   "_hintEastSuccess", "_hintEastFailure", "_hintEastActive", "_hintEastStartup",
   "_hintWestSuccess", "_hintWestFailure", "_hintWestActive", "_hintWestStartup",
-  "_vipEscortMarkers", "_vipEscortStartMarker", "_vipEscortEndMarker",
-  "_vipEscortStartPos", "_vipEscortEndPos", "_vipGrp", "_created", "_result", "_vipJoined"
+  "_vipEscortMarkers", "_vipEscortStartMarker", "_vipEscortEndMarker", "_vipGrpHoldWaypoint",
+  "_vipEscortStartPos", "_vipEscortEndPos", "_vipGrp", "_created", "_result", "_vipJoined", "_startTimeout", "_endTimeout"
 ];
 
 
@@ -38,6 +38,7 @@ _hintEastStartup = "<t align='center'><t size='2.2'>Infidel VIP</t><br/><t size=
 if (playerSide == east) then { hint parsetext _hintEastStartup; };
 
 /***************** Select a start & end point *****************/
+{ [ _x ] call BEN_hideMarker; } forEach _vipMarkers;
 _vipEscortStartMarker = _vipMarkers call BIS_fnc_selectrandom;
 _vipEscortEndMarker = _vipMarkers call BIS_fnc_selectrandom;
 while { _vipEscortStartMarker == _vipEscortEndMarker } do { _vipEscortEndMarker = _vipMarkers call BIS_fnc_selectrandom; };
@@ -49,6 +50,8 @@ _vipEscortEndPos = getMarkerPos _vipEscortEndMarker;
 /***************** Create the VIP group *****************/
 _created = [];
 _vipGrp = [ _vipEscortStartPos, "BEN_PMC_VIP_VE" ] call BEN_createVIPGroup;
+_vipGrpHoldWaypoint = _vipGrp addWaypoint [ _vipEscortStartPos, 0 ];
+_vipGrpHoldWaypoint setWaypointType "HOLD";
 BEN_PMC_VIP_SUV = "C_SUV_01_F" createVehicle _vipEscortStartPos;
 _created = _created + (units _vipGrp) + [ BEN_PMC_VIP_SUV ];
 
@@ -58,9 +61,11 @@ _created = _created + (units _vipGrp) + [ BEN_PMC_VIP_SUV ];
 /***************** Begin waiting for results *****************/
 _result = "pending";
 _vipJoined = false;
+_startTimeout = 0;
+_endTimeout = 0;
 waitUntil {
   sleep 1;
-  
+
   /***************** set the proximity trigger *****************/
   if (player distance BEN_PMC_VIP_VE < 10 && !_vipJoined) then {
     _vipJoined = true;
@@ -70,11 +75,21 @@ waitUntil {
     [ _vipEscortStartMarker ] call BEN_hideMaker;
     [ _vipEscortEndMarker, "Deliver VIP", "ColorGreen", 1, "mil_dot" ] call BEN_updateMarker;
   };
-  
+
+  /***************** check for timeout ******************/
+  if (!_vipJoined) then {
+    _startTimeout = _startTimeout + 1;
+  };
+  if(_vipJoined) then {
+    _endTimeout = _endTimeout + 1;
+  };
+  if (_startTimeout > 900) then { _result = "fail"; };
+  if (_endTimeout > 1800) then { _result = "fail"; };
+
   /***************** check for win or fail *****************/
   if (!alive BEN_PMC_VIP_VE) then { _result = "fail"; };
   if (alive BEN_PMC_VIP_VE && BEN_PMC_VIP_VE distance _vipEscortEndPos < 10) then { _result = "win"; };
-  
+
   /***************** conditions for ending the wait *****************/
   (_result == "win") OR (_result == "fail")
 };
