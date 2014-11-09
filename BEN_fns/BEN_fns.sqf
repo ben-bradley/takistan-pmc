@@ -24,7 +24,7 @@ BEN_randomPos = {
 /***************************************************************************************/
 BEN_createVIPGroup = {
 
-  private [ "_origin", "_grp", "_initString" ];
+  private [ "_origin", "_grp", "_initString", "_wp" ];
 
   _origin = _this select 0;
   _vipVar = _this select 1;
@@ -32,6 +32,29 @@ BEN_createVIPGroup = {
 
   _grp = [ _origin, RESISTANCE, (configfile >> "CfgGroups" >> "Indep" >> "PG_Services" >> "Infantry" >> "PMC_VIP_Bodyguard") ] call BIS_fnc_spawnGroup;
   "PMC_VIP_F" createUnit [ _origin, _grp, _initString ];
+
+  _wp = _grp addWaypoint [ _origin, 0 ];
+  _wp setWaypointType "HOLD";
+  _wp setWaypointFormation "DIAMOND";
+
+  sleep 1;
+
+  _grp
+
+};
+
+
+BEN_createBodyguards = {
+
+  private [ "_origin", "_grp", "_wp" ];
+
+  _origin = _this select 0;
+
+  _grp = [ _origin, RESISTANCE, (configfile >> "CfgGroups" >> "Indep" >> "PG_Services" >> "Infantry" >> "PMC_VIP_Bodyguard") ] call BIS_fnc_spawnGroup;
+
+  _wp = _grp addWaypoint [ _origin, 0 ];
+  _wp setWaypointType "HOLD";
+
   sleep 1;
 
   _grp

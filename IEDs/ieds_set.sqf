@@ -14,7 +14,10 @@ private [
 /***************** Start configurable variables *****************/
 
 _iedObjects = [
-  "IEDUrbanSmall_F", "IEDLandSmall_F", "IEDUrbanBig_F", "IEDLandBig_F"
+//  "IEDUrbanSmall_F", "IEDLandSmall_F", "IEDUrbanBig_F", "IEDLandBig_F"
+  "RoadCone_F", "Land_Pallets_F", "Land_WheelCart_F",
+  "Land_Tyre_F", "Land_Bucket_F", "Land_GarbageWashingMachine_F",
+  "Land_Bucket_painted_F", "Land_CanisterPlastic_F", "Land_JunkPile_F"
 ];
 _probability = 3; // 1 in _probability chance of having an IED in a _town
 _probabilityVBIED = 4; // 1 in _probabilityVBIED of _probability chance of a VBIED
@@ -43,7 +46,7 @@ _t = 0;
     if (floor random _probabilityVBIED == 0) then {
       _ied = createVehicle [ "C_Van_01_fuel_F", _pos, [], 0, "CAN_COLLIDE" ];
     } else {
-      _ied = createMine [ (_iedObjects call BIS_fnc_selectrandom), _pos, [], 0 ];
+      _ied = createVehicle [ (_iedObjects call BIS_fnc_selectrandom), _pos, [], 0, "CAN_COLLIDE" ];
     };
     _ied addAction [ "Disarm IED", "IEDs\disarm_ied.sqf", _x, 0, true, true, "", "(_this distance _target) < 2" ];
     _created = _created + [ _ied ];

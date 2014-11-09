@@ -6,8 +6,8 @@ private [
   "_hintPmcSuccess", "_hintPmcFailure", "_hintPmcActive", "_hintPmcStartup",
   "_hintEastSuccess", "_hintEastFailure", "_hintEastActive", "_hintEastStartup",
   "_hintWestSuccess", "_hintWestFailure", "_hintWestActive", "_hintWestStartup",
-  "_vipEscortMarkers", "_vipEscortStartMarker", "_vipEscortEndMarker", "_vipGrpHoldWaypoint",
-  "_vipEscortStartPos", "_vipEscortEndPos", "_vipGrp", "_created", "_result", "_vipJoined", "_startTimeout", "_endTimeout"
+  "_vipEscortMarkers", "_vipEscortStartMarker", "_vipEscortEndMarker",
+  "_vipEscortStartPos", "_vipEscortEndPos", "_vipGrp1", "_vipGrp2", "_created", "_result", "_vipJoined", "_startTimeout", "_endTimeout"
 ];
 
 
@@ -49,11 +49,9 @@ _vipEscortEndPos = getMarkerPos _vipEscortEndMarker;
 
 /***************** Create the VIP group *****************/
 _created = [];
-_vipGrp = [ _vipEscortStartPos, "BEN_PMC_VIP_VE" ] call BEN_createVIPGroup;
-_vipGrpHoldWaypoint = _vipGrp addWaypoint [ _vipEscortStartPos, 0 ];
-_vipGrpHoldWaypoint setWaypointType "HOLD";
-BEN_PMC_VIP_SUV = "C_SUV_01_F" createVehicle _vipEscortStartPos;
-_created = _created + (units _vipGrp) + [ BEN_PMC_VIP_SUV ];
+_vipGrp1 = [ _vipEscortStartPos, "BEN_PMC_VIP_VE" ] call BEN_createVIPGroup;
+_vipGrp2 = [ _vipEscortEndPos ] call BEN_createBodyguards;
+_created = _created + (units _vipGrp1) + (units _vipGrp2);
 
 /***************** Update the map marker *****************/
 [ _vipEscortStartMarker, "Escort the VIP", "ColorGreen", 1, "mil_dot" ] call BEN_updateMarker;
