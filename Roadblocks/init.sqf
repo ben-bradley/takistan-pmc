@@ -1,20 +1,21 @@
 call compile preprocessFile "Roadblocks\fire.sqf";
 
-private [ "_rbMarkers", "_civs", "_created", "_create", "_pos", "_rb", "_fire", "_grp", "_civGrp", "_probability", "_grpHoldWaypoint", "_townPos", "_roads" ];
+private [ "_civs", "_created", "_create", "_pos", "_rb", "_fire", "_grp", "_civGrp", "_probability", "_grpHoldWaypoint", "_townPos", "_roads" ];
 
 _civs = [ "CAF_AG_ME_CIV_04", "CAF_AG_ME_CIV_03", "CAF_AG_ME_CIV_02", "CAF_AG_ME_CIV" ];
-_probability = 3; // 1 in _probability chance of placing a road block
-{ [ _x ] call BEN_hideMarker; } forEach _rbMarkers;
+_probability = 4; // 1 in _probability chance of placing a road block
 
 while {true} do {
   _created = [];
   {
     _create = floor random _probability;
     if (_create == 0) then {
-
       _townPos = getMarkerPos _x;
-      _roads = _townPos nearRoads 200;
+      _roads = _townPos nearRoads 250;
       _pos = position (_roads call BIS_fnc_selectRandom);
+      while { position player distance _pos < 100 } do {
+        _pos = position (_roads call BIS_fnc_selectRandom);
+      };
 
       _rb = createVehicle [ "Land_Tyres_F", _pos, [], 0, "CAN_COLLIDE" ];
       [ getPos _rb, "FIRE_BIG" ] call BIS_fn_createFireEffect;
@@ -29,6 +30,7 @@ while {true} do {
   } forEach BEN_towns;
   sleep 300 + (random 300);
   {
+    while { position _x distance position player < 100 } do { sleep 1; };
     { if (typeOf _x == "#particlesource" || typeOf _x == "#lightpoint") then { deleteVehicle _x; }; } forEach (_x nearObjects 5);
     deleteVehicle _x;
   } forEach _created;
